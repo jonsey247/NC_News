@@ -188,4 +188,42 @@
          });
      });
    });
+
+   
+   describe('PUT /api/comments/:comment_id', function () {
+     it('It increases the number of up votes', function (done) {
+       request(server)
+         .put(`/api/comments/${usefulIds.comment_id}?vote=up`)
+         .end((err, res) => {
+           if (err) done(err);
+           else {
+             expect(res.status).to.equal(200);
+             request(server)
+             .get(`/api/articles/${usefulIds.article_id}/comments`)
+             .end((err, res) => {
+               expect(res.status).to.equal(200);
+               expect(res.body[0].votes).to.equal(1);
+               done();
+             });
+           }
+         });
+     });
+     it('It reduces the number of up votes', function (done) {
+       request(server)
+         .put(`/api/comments/${usefulIds.comment_id}?vote=down`)
+         .end((err, res) => {
+           if (err) done(err);
+           else {
+             expect(res.status).to.equal(200);
+             request(server)
+             .get(`/api/articles/${usefulIds.article_id}/comments`)
+             .end((err, res) => {
+               expect(res.status).to.equal(200);
+               expect(res.body[0].votes).to.equal(0);
+               done();
+             });
+           }
+         });
+     });
+   });
  });
