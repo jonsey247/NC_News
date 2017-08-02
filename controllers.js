@@ -40,6 +40,21 @@ function getCommentsByArticles(req, res) {
             }
         });
     }
+
+
+ 
+ function postCommentToArticle (req, res) {
+     const newComment = req.body.comment;
+     const commentObj = { belongs_to: req.params.article_id, body:newComment };
+     const freshComment = new Comments(commentObj);
+     freshComment.save(function (err, comments) {
+         if (err) return res.status(500).send('Error: something went wrong.');
+         else {
+             res.status(200).json(comments);
+         }
+     });
+ }
+ 
     module.exports = {
-        getTopics, getArticlesByTopic, getArticles, getCommentsByArticles
+        getTopics, getArticlesByTopic, getArticles, getCommentsByArticles, postCommentToArticle
     };

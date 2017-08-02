@@ -132,4 +132,25 @@ describe('API', function () {
         });
     });
   });
+
+   describe('POST /api/articles/:article_id/comments', function () {
+     it('It posts a new comment to an article', function (done) {
+       request(server)
+         .post(`/api/articles/${usefulIds.article_id}/comments`)
+         .send({"comment": "This is my new comment"})
+         .end((err, res) => {
+           if (err) done(err);
+           else {
+             expect(res.status).to.equal(200);
+             request(server)
+             .get(`/api/articles/${usefulIds.article_id}/comments`)
+             .end((err, res) => {
+               expect(res.status).to.equal(200);
+               expect(res.body.length).to.equal(3);
+               done();
+             });
+           }
+         });
+     });
+   });
 }); 
