@@ -66,30 +66,42 @@ function voteArticle(req, res) {
     });
 }
 
-function getArticlesById (req, res) {
-     Articles.findById(req.params.article_id, function (err, article) {
-         if (err) return res.status(500).send('Error: something went wrong.');
-         else {
-             res.status(200).json(article);
-         }
-     });
- }
+function getArticlesById(req, res) {
+    Articles.findById(req.params.article_id, function (err, article) {
+        if (err) return res.status(500).send('Error: something went wrong.');
+        else {
+            res.status(200).json(article);
+        }
+    });
+}
 
 
- 
- function voteComment (req, res) {
-     const query = req.query;
-     let voteNum;
-     if (query.vote === 'up') {voteNum = 1;} else if (query.vote === 'down') {voteNum = -1;}
-     Comments.findByIdAndUpdate(req.params.comment_id, {$inc:{votes:voteNum}}, function (err) {
-         if (err) return res.status(500).send(err);
-         else {
-             res.status(200).send({message:'OK'});
-         }
-     });
- }
- 
+
+function voteComment(req, res) {
+    const query = req.query;
+    let voteNum;
+    if (query.vote === 'up') { voteNum = 1; } else if (query.vote === 'down') { voteNum = -1; }
+    Comments.findByIdAndUpdate(req.params.comment_id, { $inc: { votes: voteNum } }, function (err) {
+        if (err) return res.status(500).send(err);
+        else {
+            res.status(200).send({ message: 'OK' });
+        }
+    });
+}
+
+function deleteComment(req, res) {
+    Comments.findByIdAndRemove(req.params.comment_id, function (err) {
+        if (err) return res.status(500).send(err);
+        else {
+            res.status(200).send({ message: 'comment deleted' });
+        }
+    });
+}
+
+
 
 module.exports = {
-    getTopics, getArticlesByTopic, getArticles, getCommentsByArticles, postCommentToArticle, voteArticle, getArticlesById, voteComment
+    getTopics, getArticlesByTopic, getArticles, getCommentsByArticles,
+    postCommentToArticle, voteArticle, getArticlesById, voteComment,
+    deleteComment
 };
