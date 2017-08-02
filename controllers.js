@@ -1,4 +1,4 @@
-const { Topics, Articles, Comments } = require('./models/models');
+const { Topics, Articles, Comments, Users  } = require('./models/models');
 
 // const { map } = require('bluebird');
 function getTopics(req, res) {
@@ -98,10 +98,21 @@ function deleteComment(req, res) {
     });
 }
 
+function getUserProfile (req, res) {
+    console.log(req.url);
+    console.log(req.params);
+   Users.findOne({username:req.params.username}, function (err, user) {
+        if (err) return res.status(500).send('Error: something went wrong.');
+        else {
+            return res.status(200).json({user});
+        }
+    }); 
+}
+
 
 
 module.exports = {
     getTopics, getArticlesByTopic, getArticles, getCommentsByArticles,
     postCommentToArticle, voteArticle, getArticlesById, voteComment,
-    deleteComment
+    deleteComment, getUserProfile
 };
