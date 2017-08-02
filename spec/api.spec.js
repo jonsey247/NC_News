@@ -8,10 +8,16 @@ const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const mongoose = require('mongoose');
 
 describe('API', function () {
-  // let usefulIds;
+  let usefulIds;
   before((done) => {
     mongoose.connection.dropDatabase()
-      .then(() => saveTestData(db, done));
+      .then(() => saveTestData(db, function (err, id) {
+        if (err) throw err;
+        else {
+          usefulIds = id;
+        }
+        done();
+      }));
   });
   describe('GET /', function () {
     it('responds with status code 200', function (done) {
@@ -46,6 +52,81 @@ describe('API', function () {
           if (err) done(err);
           else {
             expect(res.body.length).to.equal(3);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('GET /api/topics/:topic_id/articles', function () {
+    it('responds with status code 200', function (done) {
+      request(server)
+        .get('/api/topics')
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.status).to.equal(200);
+            done();
+          }
+        });
+    });
+    it('It gets all articles for a certain topic', function (done) {
+      request(server)
+        .get('/api/topics/football/articles')
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.body.length).to.equal(1);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('GET /api/articles', function () {
+    it('responds with status code 200', function (done) {
+      request(server)
+        .get('/api/articles')
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.status).to.equal(200);
+            done();
+          }
+        });
+    });
+    it('It gets all articles', function (done) {
+      request(server)
+        .get('/api/articles')
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.body.length).to.equal(2);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('GET /api/articles/:article_id/comments', function () {
+    it('responds with status code 200', function (done) {
+      request(server)
+        .get(`/api/articles/${usefulIds.article_id}/comments`)
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.status).to.equal(200);
+            done();
+          }
+        });
+    });
+    it('It gets all articles', function (done) {
+      request(server)
+        .get(`/api/articles/${usefulIds.article_id}/comments`)
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            expect(res.body.length).to.equal(2);
             done();
           }
         });
