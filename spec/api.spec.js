@@ -153,4 +153,24 @@ describe('API', function () {
          });
      });
    });
+
+   describe('PUT /api/articles/:article_id', function () {
+     it('It changes votes on articles', function (done) {
+       request(server)
+         .put(`/api/articles/${usefulIds.article_id}?vote=up`)
+         .end((err, res) => {
+           if (err) done(err);
+           else {
+             expect(res.status).to.equal(200);
+             request(server)
+             .get(`/api/articles/${usefulIds.article_id}/comments`)
+             .end((err, res) => {
+               expect(res.status).to.equal(200);
+               expect(res.body.length).to.equal(3);
+               done();
+             });
+           }
+         });
+     });
+   });
 }); 
