@@ -226,4 +226,34 @@
          });
      });
    });
+
+   
+   describe('DELETE /api/comments/:comment_id', function () {
+     it('It deletes comments', function (done) {
+       let numComments;
+       request(server)
+         .get(`/api/articles/${usefulIds.article_id}/comments`)
+         .end((err, res) => {
+             if (err) done(err);
+             expect(res.status).to.equal(200);
+             numComments = res.body.length;
+             request(server)
+             .delete(`/api/comments/${usefulIds.comment_id}`)
+             .end((err, res) => {
+               if (err) done(err);
+               else {
+                 expect(res.status).to.equal(200);
+                 request(server)
+                 .get(`/api/articles/${usefulIds.article_id}/comments`)
+                 .end((err, res) => {
+                   expect(res.status).to.equal(200);
+                   expect(res.body.length).to.equal(numComments - 1);
+                   done();
+                 });
+               }
+             });
+         });
+         
+     });
+   });
  });
