@@ -4,7 +4,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 // const { map } = require('bluebird');
 function getTopics(req, res) {
     Topics.find({}, function (err, topics) {
-        console.log(topics);
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
             res.status(200).json(topics);
@@ -14,7 +13,6 @@ function getTopics(req, res) {
 
 function getArticlesByTopic(req, res) {
     const id = req.params.topic_id;
-    console.log(id);
     Articles.find({ belongs_to: id }, function (err, topics) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
@@ -44,4 +42,4 @@ function getCommentsByArticles(req, res) {
 }
 module.exports = {
     getTopics, getArticlesByTopic, getArticles, getCommentsByArticles
-}; 
+};

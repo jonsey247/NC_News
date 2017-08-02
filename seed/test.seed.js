@@ -1,6 +1,4 @@
 const async = require('async');
-const mongoose = require('mongoose');
-
 const models = require('../models/models');
 
 const topics = [
@@ -21,7 +19,7 @@ const user = new models.Users({
 });
 
 function saveUser(cb) {
-  user.save(err => {
+  user.save((err) => {
     if (err) cb(err);
     else cb();
   });
@@ -43,8 +41,8 @@ function saveArticles(cb) {
 
 function saveComments(articlesArray, cb) {
   const articleId = articlesArray[0]._id;
-  const comment = new models.Comments({ body: 'this is a comment', belongs_to: articleId });
-  const comment2 = new models.Comments({ body: 'this is another comment', belongs_to: articleId, created_by: 'someone' });
+  const comment = new models.Comments({ body: 'this is a comment', belongs_to: articleId, created_by: 'northcoder' });
+  const comment2 = new models.Comments({ body: 'this is another comment', belongs_to: articleId, created_by: 'northcoder' });
   models.Comments.create([comment, comment2], err => {
     if (err) cb(err);
     else cb(null, { article_id: articleId, comment_id: comment._id, non_northcoder_comment: comment2._id });
@@ -52,17 +50,13 @@ function saveComments(articlesArray, cb) {
 }
 
 function saveTestData(DB, cb) {
-  if (!mongoose.connection.readyState) mongoose.connect(DB);
-  mongoose.connection.dropDatabase(function (err) {
-    if (err) return cb(err);
-    async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
-      if (err) cb(err);
-      else {
-        cb(null, ids);
-      }
-    });
+  async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
+    if (err) cb(err);
+    else {
+      console.log('Test data seeded successfully.');
+      cb(null, ids);
+    }
   });
-
 }
 
-module.exports = saveTestData;
+module.exports = saveTestData; 

@@ -9,6 +9,7 @@ const config = require('./config');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
 const controllers = require('./controllers');
+
 mongoose.connect(db, function (err) {
   if (!err) {
     console.log(`connected to the Database: ${db}`);
@@ -28,10 +29,7 @@ app.get('/api/articles/:article_id/comments', controllers.getCommentsByArticles)
 app.use('/api', function () { });
 
 app.listen(PORT, function () {
-  app.use('/api', function () { });
+  console.log(`listening on port ${PORT}`);
+});
 
-  app.listen(PORT, function () {
-    console.log(`listening on port ${PORT}`);
-  });
-
-  module.exports = app;
+module.exports = app; 
