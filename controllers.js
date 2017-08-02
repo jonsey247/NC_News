@@ -1,8 +1,10 @@
-const { Topics } = require('./models/models');
-const { Topics, Articles } = require('./models/models');
+const { Topics, Articles, Comments } = require('./models/models');
+const ObjectId = require('mongoose').Types.ObjectId;
+
 // const { map } = require('bluebird');
 function getTopics(req, res) {
     Topics.find({}, function (err, topics) {
+        console.log(topics);
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
             res.status(200).json(topics);
@@ -29,9 +31,17 @@ function getArticles(req, res) {
         }
     });
 }
+
+function getCommentsByArticles(req, res) {
+    const id_obj = new ObjectId(req.params.article_id);
+    const query = { belongs_to: id_obj };
+    Comments.find(query, function (err, comments) {
+        if (err) return res.status(500).send('Error: something went wrong.');
+        else {
+            res.status(200).json(comments);
+        }
+    });
+}
 module.exports = {
-    getTopics, getArticlesByTopic, getArticles
-};
-module.exports = {
-    getTopics, getArticlesByTopic
+    getTopics, getArticlesByTopic, getArticles, getCommentsByArticles
 }; 

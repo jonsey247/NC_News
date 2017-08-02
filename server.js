@@ -2,6 +2,7 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
 const express = require('express');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const bodyParser = require('body-parser');
 const app = express();
 const config = require('./config');
@@ -23,6 +24,7 @@ app.get('/', function (req, res) {
 app.get('/api/topics', controllers.getTopics);
 app.get('/api/topics/:topic_id/articles', controllers.getArticlesByTopic);
 app.get('/api/articles', controllers.getArticles);
+app.get('/api/articles/:article_id/comments', controllers.getCommentsByArticles);
 app.use('/api', function () { });
 
 app.listen(PORT, function () {

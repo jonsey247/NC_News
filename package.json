@@ -7,8 +7,8 @@
     "test": "mocha ./spec",
     "start": "nodemon server.js",
     "lint": "eslint ./",
-    "posttest": "npm run lint",
-    "precommit": "npm test"
+    "posttest": "npm run lint"
+    // "precommit": "npm test"
   },
   "author": "",
   "license": "ISC",
