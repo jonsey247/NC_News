@@ -21,11 +21,14 @@ app.get('/', function (req, res) {
   res.status(200).send('All good!');
 });
 app.get('/api/topics', controllers.getTopics);
-
-app.use('/api', function () {});
+app.get('/api/topics/:topic_id/articles', controllers.getArticlesByTopic);
+app.use('/api', function () { });
 
 app.listen(PORT, function () {
-  console.log(`listening on port ${PORT}`);
-});
+  app.use('/api', function () { });
 
-module.exports = app;
+  app.listen(PORT, function () {
+    console.log(`listening on port ${PORT}`);
+  });
+
+  module.exports = app;
