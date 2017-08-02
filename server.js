@@ -29,6 +29,7 @@ app.get('/api/articles/:article_id', controllers.getArticlesById);
 app.get('/api/articles/:article_id/comments', controllers.getCommentsByArticles);
 app.post('/api/articles/:article_id/comments', controllers.postCommentToArticle);
 app.put('/api/articles/:article_id', controllers.voteArticle);
+app.put('/api/comments/:comment_id', controllers.voteComment);
 app.use('/api', function () { });
 
 app.listen(PORT, function () {
