@@ -20,6 +20,18 @@ function getArticlesByTopic(req, res) {
         }
     });
 }
+
+function getArticles(req, res) {
+    Articles.find({}, function (err, articles) {
+        if (err) return res.status(500).send('Error: something went wrong.');
+        else {
+            res.status(200).json(articles);
+        }
+    });
+}
+module.exports = {
+    getTopics, getArticlesByTopic, getArticles
+};
 module.exports = {
     getTopics, getArticlesByTopic
 }; 

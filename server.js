@@ -22,6 +22,7 @@ app.get('/', function (req, res) {
 });
 app.get('/api/topics', controllers.getTopics);
 app.get('/api/topics/:topic_id/articles', controllers.getArticlesByTopic);
+app.get('/api/articles', controllers.getArticles);
 app.use('/api', function () { });
 
 app.listen(PORT, function () {
