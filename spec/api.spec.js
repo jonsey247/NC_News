@@ -51,7 +51,7 @@
          .end((err, res) => {
            if (err) done(err);
            else {
-             expect(res.body.length).to.equal(3);
+             expect(res.body.topics.length).to.equal(3);
              done();
                }
          });
@@ -76,7 +76,7 @@
          .end((err, res) => {
            if (err) done(err);
            else {
-             expect(res.body.length).to.equal(1);
+             expect(res.body.articles.length).to.equal(1);;
              done();
                }
          });
@@ -101,7 +101,7 @@
          .end((err, res) => {
            if (err) done(err);
            else {
-             expect(res.body.length).to.equal(2);
+             expect(res.body.articles.length).to.equal(2);
              done();
                }
          });
@@ -126,7 +126,7 @@
          .end((err, res) => {
            if (err) done(err);
            else {
-             expect(res.body.length).to.equal(2);
+             expect(res.body.comments.length).to.equal(2);
              done();
                }
          });
@@ -145,7 +145,7 @@
              .get(`/api/articles/${usefulIds.article_id}/comments`)
              .end((err, res) => {
                expect(res.status).to.equal(200);
-               expect(res.body.length).to.equal(3);
+               expect(res.body.comments.length).to.equal(3);
                done();
              });
            }
@@ -164,7 +164,7 @@
              .get(`/api/articles/${usefulIds.article_id}`)
               .end((err, res) => {
                 expect(res.status).to.equal(200);
-               expect(res.body.votes).to.equal(1);
+                expect(res.body.article.votes).to.equal(1);
                 done();
               });
             }
@@ -181,7 +181,7 @@
              .get(`/api/articles/${usefulIds.article_id}`)
              .end((err, res) => {
                expect(res.status).to.equal(200);
-               expect(res.body.votes).to.equal(0);
+               expect(res.body.article.votes).to.equal(0);
                done();
              });
            }
@@ -189,7 +189,6 @@
      });
    });
 
-   
    describe('PUT /api/comments/:comment_id', function () {
      it('It increases the number of up votes', function (done) {
        request(server)
@@ -202,7 +201,7 @@
              .get(`/api/articles/${usefulIds.article_id}/comments`)
              .end((err, res) => {
                expect(res.status).to.equal(200);
-               expect(res.body[0].votes).to.equal(1);
+               expect(res.body.comments[0].votes).to.equal(1);
                done();
              });
            }
@@ -219,7 +218,7 @@
              .get(`/api/articles/${usefulIds.article_id}/comments`)
              .end((err, res) => {
                expect(res.status).to.equal(200);
-               expect(res.body[0].votes).to.equal(0);
+               expect(res.body.comments[0].votes).to.equal(0);
                done();
              });
            }
@@ -227,7 +226,6 @@
      });
    });
 
-   
    describe('DELETE /api/comments/:comment_id', function () {
      it('It deletes comments', function (done) {
        let numComments;
@@ -236,7 +234,7 @@
          .end((err, res) => {
              if (err) done(err);
              expect(res.status).to.equal(200);
-             numComments = res.body.length;
+             numComments = res.body.comments.length;
              request(server)
              .delete(`/api/comments/${usefulIds.comment_id}`)
              .end((err, res) => {
@@ -247,7 +245,7 @@
                  .get(`/api/articles/${usefulIds.article_id}/comments`)
                  .end((err, res) => {
                    expect(res.status).to.equal(200);
-                   expect(res.body.length).to.equal(numComments - 1);
+                   expect(res.body.comments.length).to.equal(numComments - 1);
                    done();
                  });
                }

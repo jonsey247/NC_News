@@ -3,19 +3,21 @@ const { Topics, Articles, Comments, Users  } = require('./models/models');
 // const { map } = require('bluebird');
 function getTopics(req, res) {
     Topics.find({}, function (err, topics) {
+
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(topics);
+            res.status(200).json({topics});
         }
     });
 }
 
 function getArticlesByTopic(req, res) {
     const id = req.params.topic_id;
-    Articles.find({ belongs_to: id }, function (err, topics) {
+
+    Articles.find({belongs_to: id}, function (err, articles) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(topics);
+            res.status(200).json({articles});
         }
     });
 }
@@ -24,7 +26,7 @@ function getArticles(req, res) {
     Articles.find({}, function (err, articles) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(articles);
+            res.status(200).json({articles});
         }
     });
 }
@@ -35,12 +37,10 @@ function getCommentsByArticles(req, res) {
     Comments.find(query, function (err, comments) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(comments);
+            res.status(200).json({comments});
         }
     });
 }
-
-
 
 function postCommentToArticle(req, res) {
     const newComment = req.body.comment;
@@ -49,7 +49,7 @@ function postCommentToArticle(req, res) {
     freshComment.save(function (err, comments) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(comments);
+            res.status(200).json({comments});
         }
     });
 }
@@ -70,7 +70,7 @@ function getArticlesById(req, res) {
     Articles.findById(req.params.article_id, function (err, article) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
-            res.status(200).json(article);
+            res.status(200).json({article});
         }
     });
 }
@@ -99,8 +99,7 @@ function deleteComment(req, res) {
 }
 
 function getUserProfile (req, res) {
-    console.log(req.url);
-    console.log(req.params);
+
    Users.findOne({username:req.params.username}, function (err, user) {
         if (err) return res.status(500).send('Error: something went wrong.');
         else {
