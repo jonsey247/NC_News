@@ -13,6 +13,10 @@ To check if you have node already installed, enter `$ node -v` into your termina
 Then again in your terminal, install the dependencies with 
 `$ npm install`
 
+if you do not have nodemon installed globally simply enter in the terminal
+`npm install nodemon -g`
+
+
 To seed the database use the terminal to cd into the repo then enter in the terminal `$ node seed/seed.js`
 
 To start the server, in the terminal enter `$ npm start`
